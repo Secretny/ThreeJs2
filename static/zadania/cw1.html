@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        label {
+            display: inline-block;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://threejs.org/build/three.js"></script>
+    <title>Document</title>
+    <script>
+
+        $(document).ready(function () {
+
+            const scene = new THREE.Scene();
+            const geometry = new THREE.BoxGeometry(60, 60, 60);
+            const axes = new THREE.AxesHelper(1000)
+            const materials = [];
+            materials.push(new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, map: new THREE.TextureLoader().load('../mats/side.jpg') }));
+            materials.push(new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, map: new THREE.TextureLoader().load('../mats/side.jpg') }));
+            materials.push(new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, map: new THREE.TextureLoader().load('../mats/top.jpg') }));//gora
+            materials.push(new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, map: new THREE.TextureLoader().load('../mats/down.jpg') }));
+            materials.push(new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, map: new THREE.TextureLoader().load('../mats/side.jpg') }));
+            materials.push(new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, map: new THREE.TextureLoader().load('../mats/side.jpg') }));
+            scene.add(axes)
+            const cube = new THREE.Mesh(geometry, materials);
+            scene.add(cube);
+            const camera = new THREE.PerspectiveCamera(
+                45,
+                16 / 9,
+                0.1,
+                10000
+            )
+            const renderer = new THREE.WebGLRenderer();
+
+            renderer.setClearColor(0xffffff);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            $("#root").append(renderer.domElement);
+
+            camera.position.x = 100;
+            camera.position.y = 0;
+            camera.position.z = 100;
+
+
+            camera.lookAt(scene.position);
+
+            let angle = 0
+            let bool = false
+            function render() {
+                $("#start").click(() => {
+                    bool = true
+                })
+                $("#stop").click(() => {
+                    bool = false
+                })
+
+                if (bool) {
+                    camera.position.y = 80 * Math.sin(angle)
+                    camera.lookAt(scene.position);
+                    angle += 0.01
+                }
+                cube.rotation.y += 0.01;
+
+                requestAnimationFrame(render);
+
+                console.log("render leci")
+                renderer.render(scene, camera);
+            }
+            render();
+        })
+    </script>
+</head>
+
+<body>
+    <div id="data">
+        <button id="start" value="start">
+            Start
+        </button>
+        <button id="stop" value="stop">
+            Stop
+        </button>
+    </div>
+    <div id="root">
+    </div>
+
+</body>
+
+</html>

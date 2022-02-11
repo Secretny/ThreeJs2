@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <title>Wybierz dokument</title>
+
+</head>
+
+<body id="body">
+    <div id="root"></div>
+    <script>
+        $.ajax({
+            url: "/zadania",
+            data: {},
+            type: "GET",
+            success: function (tab) {
+                console.log(tab.length)
+                for (let i = 0; i < tab.length; i++) {
+                    let br = $("<br>")
+                    let a = $("<a>")
+                    a.html(tab[i])
+                    a.attr("href", tab[i])
+                    $("#root").append(a).append(br)
+                }
+            },
+            error: function (xhr, status, error) {
+
+            },
+        });
+
+    </script>
+</body>
+
+</html>
